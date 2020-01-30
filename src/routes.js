@@ -1,7 +1,9 @@
 import { Router } from 'express';
 
+import AuthenticationController from './app/controllers/AuthenticationController';
+
 const routes = new Router();
 
-routes.get('/', (req, res) => res.json({ message: 'Hello FastFeet' }));
+routes.get('/authentication', AuthenticationController.store);
 
 export default routes;
