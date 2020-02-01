@@ -28,17 +28,28 @@ class RecipientController {
   }
 
   async update(req, res) {
-    const { id } = req.params;
-    return res.json({ message: `Update id: ${id}` });
+    const schema = Yup.object().shape({
+      name: Yup.string(),
+      street: Yup.string(),
+      number: Yup.string(),
+      complement: Yup.string(),
+      state: Yup.string(),
+      city: Yup.string(),
+      zip_code: Yup.string(),
+    });
+
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ error: 'Invalid data' });
+    }
+
+    const recipient = await Recipient.findByPk(req.params.id);
+
+    if (!recipient) res.status(400).json({ error: 'Recipient not found' });
+
+    const recipient_update = await recipient.update(req.body);
+
+    return res.json(recipient_update);
   }
 }
 
 export default new RecipientController();
-
-// name,
-// Street,
-// number, --
-// complement, --
-// state,
-// City
-// Zip code
