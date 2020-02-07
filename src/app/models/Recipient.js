@@ -12,7 +12,7 @@ class Recipient extends Model {
         city: Sequelize.STRING,
         zip_code: Sequelize.STRING,
       },
-      { sequelize }
+      { sequelize, tableName: 'recipient' }
     );
   }
 }

@@ -1,10 +1,10 @@
 # FastFeet
-desafio 2 RocketSeat - etapa 1/4
+desafio RocketSeat
 
 # Docker Config
 
   # mariaDB
-  docker run --name database-mariadb -e MYSQL_ROOT_PASSWORD=admin -p 3306:3306 -d mariadb
+  docker run --name database-mariadb -e MYSQL_ROOT_PASSWORD=root -p 3306:3306 -d mariadb
 
   # phpmyadmin
   docker run --name myadmin -d --link database-mariadb:db -p 8080:80 phpmyadmin/phpmyadmin
@@ -12,7 +12,7 @@ desafio 2 RocketSeat - etapa 1/4
   # Acesso do myadmin:
   url: http://localhost:8080
   user: root
-  password: admin
+  password: root
 
 # iniciar os processos
   docker start database-mariadb myadmin
