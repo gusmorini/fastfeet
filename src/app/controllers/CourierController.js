@@ -42,6 +42,10 @@ class CourierController {
 
     return res.json({ id, name, email });
   }
+
+  async update(req, res) {
+    res.json({ ok: 'update' });
+  }
 }
 
 export default new CourierController();
