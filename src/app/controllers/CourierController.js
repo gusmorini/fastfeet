@@ -68,6 +68,14 @@ class CourierController {
 
     return res.json({ id, name, email });
   }
+
+  async delete(req, res) {
+    const exists = await Courier.destroy({ where: { id: req.params.id } });
+    if (!exists) {
+      return res.status(400).json({ error: 'Courier id does not exist' });
+    }
+    return res.json();
+  }
 }
 
 export default new CourierController();

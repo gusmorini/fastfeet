@@ -28,6 +28,7 @@ routes.get('/recipient', RecipientController.index);
 routes.post('/courier', CourierController.store);
 routes.get('/courier', CourierController.index);
 routes.put('/courier/:id', CourierController.update);
+routes.delete('/courier/:id', CourierController.delete);
 
 routes.post('/files', upload.single('file'), FileController.store);
 
