@@ -32,6 +32,9 @@ routes.put('/deliveryman/:id', DeliverymanController.update);
 routes.delete('/deliveryman/:id', DeliverymanController.delete);
 
 routes.post('/files', upload.single('file'), FileController.store);
+routes.get('/files', FileController.index);
+
 routes.post('/signature', upload.single('file'), SignatureController.store);
+routes.get('/signature', SignatureController.index);
 
 export default routes;

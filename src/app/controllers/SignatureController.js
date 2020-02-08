@@ -11,6 +11,11 @@ class SignatureController {
 
     return res.json(signature);
   }
+
+  async index(req, res) {
+    const signatures = await Signature.findAll();
+    return res.json(signatures);
+  }
 }
 
 export default new SignatureController();
