@@ -47,23 +47,26 @@ class CourierController {
     const schema = Yup.object().shape({
       name: Yup.string(),
       email: Yup.string().email(),
-      avatar_id: Yup.string(),
+      avatar_id: Yup.number(),
     });
 
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ error: 'Invalid data' });
     }
 
-    if (req.body.email) {
-      const exists = await Courier.findOne({
-        where: { email: req.body.email },
-      });
+    const courier = await Courier.findByPk(req.params.id);
+
+    if (req.body.email && req.body.email !== courier.email) {
+      const { email } = req.body;
+      const exists = await Courier.findOne({ where: { email } });
       if (exists) {
-        return res.status(401).json({ error: 'Courier already registred' });
+        return res.status(400).json({ error: 'Courier already registered' });
       }
     }
 
-    res.json({ ok: 'update' });
+    const { id, name, email } = await courier.update(req.body);
+
+    return res.json({ id, name, email });
   }
 }
 
