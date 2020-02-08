@@ -9,7 +9,6 @@ class Courier extends Model {
       },
       {
         sequelize,
-        tableName: 'couriers',
       }
     );
     return this;

@@ -1,10 +1,12 @@
 import Sequelize from 'sequelize';
-import databaseConfig from '../config/database';
+import databasecfg from '../config/database';
+
 import User from '../app/models/User';
 import Recipient from '../app/models/Recipient';
+import File from '../app/models/File';
 import Courier from '../app/models/Courier';
 
-const models = [User, Recipient, Courier];
+const models = [User, Recipient, File, Courier];
 
 class Database {
   constructor() {
@@ -12,8 +14,12 @@ class Database {
   }
 
   init() {
-    this.connection = new Sequelize(databaseConfig);
-    models.map(model => model.init(this.connection));
+    this.connection = new Sequelize(databasecfg);
+    models.map(model => {
+      model.init(this.connection);
+      // se existe o método associate faça...
+      if (model.associate) model.associate(this.connection.models);
+    });
   }
 }
 
