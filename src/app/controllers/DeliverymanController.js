@@ -1,10 +1,10 @@
 import * as Yup from 'yup';
-import Courier from '../models/Courier';
+import Deliveryman from '../models/Deliveryman';
 import File from '../models/File';
 
-class CourierController {
+class DeliverymanController {
   async index(req, res) {
-    const couriers = await Courier.findAll({
+    const deliveryman = await Deliveryman.findAll({
       attributes: ['id', 'name', 'email'],
       include: [
         {
@@ -15,7 +15,7 @@ class CourierController {
       ],
     });
 
-    return res.json(couriers);
+    return res.json(deliveryman);
   }
 
   async store(req, res) {
@@ -30,7 +30,7 @@ class CourierController {
       return res.status(400).json({ error: 'Invalid data' });
     }
 
-    const exists = await Courier.findOne({
+    const exists = await Deliveryman.findOne({
       where: { email: req.body.email },
     });
 
@@ -38,7 +38,7 @@ class CourierController {
       return res.status(400).json({ error: 'Courier already exists.' });
     }
 
-    const { id, name, email } = await Courier.create(req.body);
+    const { id, name, email } = await Deliveryman.create(req.body);
 
     return res.json({ id, name, email });
   }
@@ -54,28 +54,28 @@ class CourierController {
       return res.status(400).json({ error: 'Invalid data' });
     }
 
-    const courier = await Courier.findByPk(req.params.id);
+    const deliveryman = await Deliveryman.findByPk(req.params.id);
 
-    if (req.body.email && req.body.email !== courier.email) {
+    if (req.body.email && req.body.email !== deliveryman.email) {
       const { email } = req.body;
-      const exists = await Courier.findOne({ where: { email } });
+      const exists = await Deliveryman.findOne({ where: { email } });
       if (exists) {
         return res.status(400).json({ error: 'Courier already registered' });
       }
     }
 
-    const { id, name, email } = await courier.update(req.body);
+    const { id, name, email } = await deliveryman.update(req.body);
 
     return res.json({ id, name, email });
   }
 
   async delete(req, res) {
-    const exists = await Courier.destroy({ where: { id: req.params.id } });
+    const exists = await Deliveryman.destroy({ where: { id: req.params.id } });
     if (!exists) {
-      return res.status(400).json({ error: 'Courier id does not exist' });
+      return res.status(400).json({ error: 'Deliveryman id does not exist' });
     }
     return res.json();
   }
 }
 
-export default new CourierController();
+export default new DeliverymanController();
