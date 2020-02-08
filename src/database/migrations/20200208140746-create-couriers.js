@@ -11,29 +11,17 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      street: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      number: {
-        type: Sequelize.STRING,
+      avatar_id: {
+        type: Sequelize.INTEGER,
+        references: { model: 'files', key: 'id' },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL',
         allowNull: true,
       },
-      complement: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
-      state: {
+      email: {
         type: Sequelize.STRING,
         allowNull: false,
-      },
-      city: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      zip_code: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        unique: true,
       },
       created_at: {
         type: Sequelize.DATE,
