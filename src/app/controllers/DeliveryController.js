@@ -2,6 +2,7 @@ import { Op } from 'sequelize';
 import Deliveryman from '../models/Deliveryman';
 import Order from '../models/Order';
 import Signature from '../models/Signature';
+import Recipient from '../models/Recipient';
 
 class DeliveryController {
   async index(req, res) {
@@ -15,6 +16,14 @@ class DeliveryController {
         canceled_at: null,
         end_date: null,
       },
+      attributes: ['id', 'product', 'start_date'],
+      include: [
+        {
+          model: Recipient,
+          as: 'recipient',
+          attributes: ['id', 'name'],
+        },
+      ],
     });
 
     return res.json(orders);
@@ -33,6 +42,19 @@ class DeliveryController {
         canceled_at: null,
         end_date: { [Op.not]: null },
       },
+      attributes: ['id', 'product', 'end_date'],
+      include: [
+        {
+          model: Recipient,
+          as: 'recipient',
+          attributes: ['id', 'name'],
+        },
+        {
+          model: Signature,
+          as: 'signature',
+          attributes: ['id', 'path', 'url'],
+        },
+      ],
     });
 
     return res.json(orders);
@@ -51,6 +73,14 @@ class DeliveryController {
         canceled_at: null,
         start_date: { [Op.not]: null },
       },
+      attributes: ['id', 'product', 'start_date'],
+      include: [
+        {
+          model: Recipient,
+          as: 'recipient',
+          attributes: ['id', 'name'],
+        },
+      ],
     });
 
     return res.json(orders);
@@ -66,6 +96,14 @@ class DeliveryController {
         deliveryman_id: req.params.id,
         canceled_at: { [Op.not]: null },
       },
+      attributes: ['id', 'product', 'canceled_at'],
+      include: [
+        {
+          model: Recipient,
+          as: 'recipient',
+          attributes: ['id', 'name'],
+        },
+      ],
     });
 
     return res.json(orders);
