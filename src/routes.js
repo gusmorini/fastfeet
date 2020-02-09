@@ -10,6 +10,7 @@ import FileController from './app/controllers/FileController';
 import SignatureController from './app/controllers/SignatureController';
 import DeliverymanController from './app/controllers/DeliverymanController';
 import OrderController from './app/controllers/OrderController';
+import DeliveryController from './app/controllers/DeliveryController';
 
 import authMiddleware from './app/middlewares/auth';
 
@@ -17,7 +18,12 @@ const routes = new Router();
 // configuração do multer
 const upload = multer(multercfg);
 
+// rotas não autenticadas
 routes.post('/authentication', AuthenticationController.store);
+// rotas dos entregadores não autenticados
+routes.get('/deliveryman/:id/orders', DeliveryController.index);
+routes.get('/deliveryman/:id/deliveries', DeliveryController.deliveries);
+routes.get('/deliveryman/:id/canceled', DeliveryController.canceled);
 
 routes.use(authMiddleware);
 
