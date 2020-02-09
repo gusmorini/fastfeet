@@ -61,12 +61,16 @@ class OrderController {
       return res.status(400).json({ error: 'Delivery man does not exist' });
     }
 
+    // envio de email
     const { name, email } = deliverymanExists;
-
     await Mail.sendMail({
       to: `${name} <${email}>`,
-      subject: 'Nova Encomenda Cadastrada',
-      text: 'Voçê tem uma nova encomenda',
+      subject: 'Nova Encomenda',
+      template: 'order',
+      context: {
+        deliveryman: name,
+        product: req.body.product,
+      },
     });
 
     const order = await Order.create(req.body);
