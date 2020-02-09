@@ -24,6 +24,9 @@ routes.post('/authentication', AuthenticationController.store);
 routes.get('/deliveryman/:id/orders', DeliveryController.index);
 routes.get('/deliveryman/:id/deliveries', DeliveryController.deliveries);
 routes.get('/deliveryman/:id/canceled', DeliveryController.canceled);
+// retirar encomenda, id do entregador e id da encomenda
+routes.put('/deliveryman/:id/withdraw/:withId', DeliveryController.withdraw);
+routes.put('/deliveryman/:id/receive/:receiveId', DeliveryController.receive);
 
 routes.use(authMiddleware);
 
