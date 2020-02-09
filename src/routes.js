@@ -24,6 +24,8 @@ routes.post('/authentication', AuthenticationController.store);
 routes.get('/deliveryman/:id/orders', DeliveryController.index);
 routes.get('/deliveryman/:id/deliveries', DeliveryController.deliveries);
 routes.get('/deliveryman/:id/canceled', DeliveryController.canceled);
+// encomenda ativas retiradas e não entregues
+routes.get('/deliveryman/:id/active', DeliveryController.active);
 // retirar encomenda, id do entregador e id da encomenda
 routes.put('/deliveryman/:id/withdraw/:withId', DeliveryController.withdraw);
 // entregador entrega a encomenda e anexa a assinatura

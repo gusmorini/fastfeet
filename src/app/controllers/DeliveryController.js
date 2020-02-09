@@ -21,7 +21,39 @@ class DeliveryController {
   }
 
   async deliveries(req, res) {
-    return res.json({ ok: 'entregas já realizadas' });
+    const { id } = req.params;
+
+    if (!(await Deliveryman.findByPk(id))) {
+      return res.status(400).json({ error: 'Delivery man does not exist' });
+    }
+
+    const orders = await Order.findAll({
+      where: {
+        deliveryman_id: id,
+        canceled_at: null,
+        end_date: { [Op.not]: null },
+      },
+    });
+
+    return res.json(orders);
+  }
+
+  async active(req, res) {
+    const { id } = req.params;
+
+    if (!(await Deliveryman.findByPk(id))) {
+      return res.status(400).json({ error: 'Delivery man does not exist' });
+    }
+
+    const orders = await Order.findAll({
+      where: {
+        deliveryman_id: id,
+        canceled_at: null,
+        start_date: { [Op.not]: null },
+      },
+    });
+
+    return res.json(orders);
   }
 
   async canceled(req, res) {
@@ -30,7 +62,10 @@ class DeliveryController {
     }
 
     const orders = await Order.findAll({
-      where: { deliveryman_id: req.params.id, canceled_at: { [Op.not]: null } },
+      where: {
+        deliveryman_id: req.params.id,
+        canceled_at: { [Op.not]: null },
+      },
     });
 
     return res.json(orders);
@@ -76,7 +111,11 @@ class DeliveryController {
       return res.status(400).json({ error: 'Order does not exist' });
     }
 
-    if (order.canceled_at !== null || order.end_date !== null) {
+    if (
+      order.canceled_at !== null ||
+      order.start_date === null ||
+      order.end_date !== null
+    ) {
       return res.status(400).json({ error: 'Order cannot be receive' });
     }
 

@@ -123,6 +123,14 @@ class OrderController {
       return res.status(400).json({ error: 'Order does not exist' });
     }
 
+    if (
+      order.start_date !== null ||
+      order.end_date !== null ||
+      order.canceled_at !== null
+    ) {
+      return res.status(400).json({ error: 'The order cannot be canceled' });
+    }
+
     order.canceled_at = new Date();
 
     await order.save();
