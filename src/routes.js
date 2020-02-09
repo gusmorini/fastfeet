@@ -9,6 +9,7 @@ import RecipientController from './app/controllers/RecipientController';
 import FileController from './app/controllers/FileController';
 import SignatureController from './app/controllers/SignatureController';
 import DeliverymanController from './app/controllers/DeliverymanController';
+import OrderController from './app/controllers/OrderController';
 
 import authMiddleware from './app/middlewares/auth';
 
@@ -36,5 +37,8 @@ routes.get('/files', FileController.index);
 
 routes.post('/signature', upload.single('file'), SignatureController.store);
 routes.get('/signature', SignatureController.index);
+
+routes.get('/order', OrderController.index);
+routes.post('/order', OrderController.store);
 
 export default routes;
