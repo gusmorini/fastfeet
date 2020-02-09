@@ -1,6 +1,7 @@
 import { Op } from 'sequelize';
 import Deliveryman from '../models/Deliveryman';
 import Order from '../models/Order';
+import Signature from '../models/Signature';
 
 class DeliveryController {
   async index(req, res) {
@@ -63,7 +64,34 @@ class DeliveryController {
   }
 
   async receive(req, res) {
-    return res.json('receive');
+    const { id, receiveId } = req.params;
+
+    if (!(await Deliveryman.findByPk(id))) {
+      return res.status(400).json({ error: 'Delivery does not exist' });
+    }
+
+    const order = await Order.findByPk(receiveId);
+
+    if (!order) {
+      return res.status(400).json({ error: 'Order does not exist' });
+    }
+
+    if (order.canceled_at !== null || order.end_date !== null) {
+      return res.status(400).json({ error: 'Order cannot be receive' });
+    }
+
+    const { originalname: name, filename: path } = req.file;
+
+    const signature = await Signature.create({
+      name,
+      path,
+    });
+
+    order.end_date = new Date();
+    order.signature_id = signature.id;
+    await order.save();
+
+    return res.json(order);
   }
 }
 
