@@ -113,6 +113,22 @@ class OrderController {
 
     return res.json(update);
   }
+
+  async delete(req, res) {
+    const { id } = req.params;
+
+    const order = await Order.findByPk(id);
+
+    if (!order) {
+      return res.status(400).json({ error: 'Order does not exist' });
+    }
+
+    order.canceled_at = new Date();
+
+    await order.save();
+
+    return res.json(order);
+  }
 }
 
 export default new OrderController();

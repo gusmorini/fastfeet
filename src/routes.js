@@ -41,5 +41,6 @@ routes.get('/signature', SignatureController.index);
 routes.get('/order', OrderController.index);
 routes.post('/order', OrderController.store);
 routes.put('/order/:id', OrderController.update);
+routes.delete('/order/:id', OrderController.delete);
 
 export default routes;
