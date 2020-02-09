@@ -19,13 +19,20 @@ const routes = new Router();
 const upload = multer(multercfg);
 
 // rotas não autenticadas
+
+// login administrador
 routes.post('/authentication', AuthenticationController.store);
+
 // rotas dos entregadores não autenticados
+
+// lista de entregar geral filtro por id
 routes.get('/deliveryman/:id/orders', DeliveryController.index);
-routes.get('/deliveryman/:id/deliveries', DeliveryController.deliveries);
-routes.get('/deliveryman/:id/canceled', DeliveryController.canceled);
-// encomenda ativas retiradas e não entregues
+// lista de encomendas retiradas
 routes.get('/deliveryman/:id/active', DeliveryController.active);
+// lista de encomendas entregues
+routes.get('/deliveryman/:id/deliveries', DeliveryController.deliveries);
+// lista de encomendas canceladas
+routes.get('/deliveryman/:id/canceled', DeliveryController.canceled);
 // retirar encomenda, id do entregador e id da encomenda
 routes.put('/deliveryman/:id/withdraw/:withId', DeliveryController.withdraw);
 // entregador entrega a encomenda e anexa a assinatura
