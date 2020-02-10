@@ -8,7 +8,7 @@ module.exports = {
         primaryKey: true,
       },
       schedule: {
-        type: Sequelize.STRING,
+        type: Sequelize.TIME,
         allowNull: false,
       },
     });

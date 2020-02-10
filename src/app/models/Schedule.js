@@ -4,7 +4,7 @@ class Schedule extends Model {
   static init(sequelize) {
     super.init(
       {
-        schedule: Sequelize.STRING,
+        schedule: Sequelize.TIME,
       },
       {
         sequelize,

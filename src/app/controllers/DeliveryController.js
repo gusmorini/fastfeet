@@ -1,4 +1,12 @@
 import { Op } from 'sequelize';
+import {
+  setHours,
+  setMinutes,
+  setSeconds,
+  startOfDay,
+  endOfDay,
+} from 'date-fns';
+
 import Deliveryman from '../models/Deliveryman';
 import Order from '../models/Order';
 import Signature from '../models/Signature';
@@ -12,7 +20,20 @@ class DeliveryController {
       return res.status(400).json({ error: 'Delivery does not exist' });
     }
 
-    const schedules = await Schedule.findAll({ attributes: ['schedule'] });
+    // const schedules = await Schedule.findAll({ attributes: ['schedule'] });
+
+    // const searchDate = new Date();
+
+    // const available = schedules.map(({ schedule }) => {
+    //   const [hour, minute] = schedule.split(':');
+
+    //   const value = setSeconds(
+    //     setMinutes(setHours(searchDate, hour), minute),
+    //     0
+    //   );
+
+    //   console.log(endOfDay(searchDate));
+    // });
 
     const orders = await Order.findAll({
       where: {
