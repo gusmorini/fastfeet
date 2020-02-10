@@ -14,14 +14,24 @@ class DeliveryController {
       where: {
         deliveryman_id: req.params.id,
         canceled_at: null,
+        start_date: null,
         end_date: null,
       },
-      attributes: ['id', 'product', 'start_date'],
+      attributes: ['id', 'product'],
       include: [
         {
           model: Recipient,
           as: 'recipient',
-          attributes: ['id', 'name'],
+          attributes: [
+            'id',
+            'name',
+            'street',
+            'number',
+            'complement',
+            'state',
+            'city',
+            'zip_code',
+          ],
         },
       ],
     });
@@ -72,13 +82,23 @@ class DeliveryController {
         deliveryman_id: id,
         canceled_at: null,
         start_date: { [Op.not]: null },
+        end_date: null,
       },
       attributes: ['id', 'product', 'start_date'],
       include: [
         {
           model: Recipient,
           as: 'recipient',
-          attributes: ['id', 'name'],
+          attributes: [
+            'id',
+            'name',
+            'street',
+            'number',
+            'complement',
+            'state',
+            'city',
+            'zip_code',
+          ],
         },
       ],
     });
