@@ -5,7 +5,9 @@ import Deliveryman from '../models/Deliveryman';
 import File from '../models/File';
 import Signature from '../models/Signature';
 
-import Mail from '../../lib/Mail';
+// enviar o email para fila
+import OrderMail from '../jobs/OrderMail';
+import Queue from '../../lib/Queue';
 
 class OrderController {
   async index(req, res) {
@@ -49,7 +51,7 @@ class OrderController {
       return res.status(400).json({ error: 'Invalid data' });
     }
 
-    const { recipient_id, deliveryman_id } = req.body;
+    const { recipient_id, deliveryman_id, product } = req.body;
 
     const recipientExist = await Recipient.findByPk(recipient_id);
     if (!recipientExist) {
@@ -64,15 +66,8 @@ class OrderController {
     // envio de email
     // handle (name,email,product)
     const { name, email } = deliverymanExists;
-    await Mail.sendMail({
-      to: `${name} <${email}>`,
-      subject: 'Nova Encomenda',
-      template: 'order',
-      context: {
-        deliveryman: name,
-        product: req.body.product,
-      },
-    });
+
+    await Queue.add(OrderMail.key, { name, email, product });
 
     const order = await Order.create(req.body);
 
