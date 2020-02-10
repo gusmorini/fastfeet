@@ -62,6 +62,7 @@ class OrderController {
     }
 
     // envio de email
+    // handle (name,email,product)
     const { name, email } = deliverymanExists;
     await Mail.sendMail({
       to: `${name} <${email}>`,

@@ -1,3 +1,6 @@
 node_modules/
-.env
 tmp/
+# não se deve enviar o arquivo .env
+# mas por se tratar de ambiente de estudos
+# achei mais cômodo
+# .env
