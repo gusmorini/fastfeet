@@ -4,11 +4,17 @@ import Order from '../models/Order';
 import Signature from '../models/Signature';
 import Recipient from '../models/Recipient';
 
+import Schedule from '../models/Schedule';
+
 class DeliveryController {
   async index(req, res) {
     if (!(await Deliveryman.findByPk(req.params.id))) {
       return res.status(400).json({ error: 'Delivery does not exist' });
     }
+
+    const schedules = await Schedule.findAll();
+
+    console.log(schedules);
 
     const orders = await Order.findAll({
       where: {
