@@ -12,9 +12,7 @@ class DeliveryController {
       return res.status(400).json({ error: 'Delivery does not exist' });
     }
 
-    const schedules = await Schedule.findAll();
-
-    console.log(schedules);
+    const schedules = await Schedule.findAll({ attributes: ['schedule'] });
 
     const orders = await Order.findAll({
       where: {

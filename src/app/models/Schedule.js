@@ -4,11 +4,12 @@ class Schedule extends Model {
   static init(sequelize) {
     super.init(
       {
-        squedule: Sequelize.STRING,
+        schedule: Sequelize.STRING,
       },
       {
         sequelize,
         tableName: 'schedules',
+        timestamps: false,
       }
     );
     return this;
