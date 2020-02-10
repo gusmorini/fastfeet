@@ -3,10 +3,10 @@ import {
   setHours,
   setMinutes,
   setSeconds,
-  startOfDay,
-  endOfDay,
-  getTime,
-  format,
+  isAfter,
+  isBefore,
+  min,
+  max,
 } from 'date-fns';
 
 import Deliveryman from '../models/Deliveryman';
@@ -21,17 +21,6 @@ class DeliveryController {
     if (!(await Deliveryman.findByPk(req.params.id))) {
       return res.status(400).json({ error: 'Delivery does not exist' });
     }
-
-    const schedules = await Schedule.findAll({ attributes: ['schedule'] });
-
-    // converte data e hora atual em timestamp
-    const searchHour = format(getTime(new Date()), 'HH');
-
-    const available = schedules.map(({ schedule }) => {
-      const [hour, minute] = schedule.split(':');
-
-      console.log(searchHour, hour);
-    });
 
     const orders = await Order.findAll({
       where: {
@@ -163,6 +152,30 @@ class DeliveryController {
 
     if (!order) {
       return res.status(400).json({ error: 'Order does not exist' });
+    }
+
+    // verifica se o horário de retirada está válido
+    const searchDate = new Date();
+    const result = [];
+
+    const schedules = await Schedule.findAll();
+
+    schedules.map(({ schedule }) => {
+      const [hour, minute] = schedule.split(':');
+      const value = setSeconds(
+        setMinutes(setHours(searchDate, hour), minute),
+        0
+      );
+      result.push(value);
+    });
+
+    const minDate = min(result);
+    const maxDate = max(result);
+
+    if (isBefore(searchDate, minDate) || isAfter(searchDate, maxDate)) {
+      return res
+        .status(400)
+        .json({ error: 'it is not possible to make withdrawals after hours' });
     }
 
     if (
