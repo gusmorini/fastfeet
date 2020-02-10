@@ -5,6 +5,8 @@ import {
   setSeconds,
   startOfDay,
   endOfDay,
+  getTime,
+  format,
 } from 'date-fns';
 
 import Deliveryman from '../models/Deliveryman';
@@ -20,20 +22,16 @@ class DeliveryController {
       return res.status(400).json({ error: 'Delivery does not exist' });
     }
 
-    // const schedules = await Schedule.findAll({ attributes: ['schedule'] });
+    const schedules = await Schedule.findAll({ attributes: ['schedule'] });
 
-    // const searchDate = new Date();
+    // converte data e hora atual em timestamp
+    const searchHour = format(getTime(new Date()), 'HH');
 
-    // const available = schedules.map(({ schedule }) => {
-    //   const [hour, minute] = schedule.split(':');
+    const available = schedules.map(({ schedule }) => {
+      const [hour, minute] = schedule.split(':');
 
-    //   const value = setSeconds(
-    //     setMinutes(setHours(searchDate, hour), minute),
-    //     0
-    //   );
-
-    //   console.log(endOfDay(searchDate));
-    // });
+      console.log(searchHour, hour);
+    });
 
     const orders = await Order.findAll({
       where: {
