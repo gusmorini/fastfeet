@@ -10,7 +10,7 @@ yarn queue
 # Docker Config
 
   # mariaDB
-  docker run --name fastfeet-mariadb -e MYSQL_ROOT_PASSWORD=root -p 3306:3306 -d mariadb
+  docker run --name fastfeet-mariadb -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=fastfeet -p 3306:3306 -d mariadb
 
   # Adminer
   docker run --name fastfeet-adminer --link fastfeet-mariadb:db -d -p 8080:8080 adminer
