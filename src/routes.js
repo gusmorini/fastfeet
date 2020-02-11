@@ -48,7 +48,9 @@ routes.put(
 /*
   ENTREGAS COM PROBLEMA
 */
-routes.get('/delivery/:id/problems', DeliveryProblemsController.list); // encomenda de um entregador
+
+// id da encomenda com problema
+routes.get('/delivery/:id/problems', DeliveryProblemsController.list);
 
 /*
   ROTAS AUTENTICADAS
