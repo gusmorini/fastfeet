@@ -51,6 +51,8 @@ routes.put(
 
 // id da encomenda com problema
 routes.get('/delivery/:id/problems', DeliveryProblemsController.list);
+// cadastra um problema de acordo com id da encomenda
+routes.post('/delivery/:id/problems', DeliveryProblemsController.store);
 
 /*
   ROTAS AUTENTICADAS
