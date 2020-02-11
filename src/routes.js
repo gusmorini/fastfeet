@@ -86,6 +86,13 @@ routes.put('/order/:id', OrderController.update);
 routes.delete('/order/:id', OrderController.delete);
 
 /* ROTA PARA DISTRIVUIDORA VER TODOS OS PROBLEMAS */
-routes.get('/delivery/problems', DeliveryProblemsController.index); // todas as encomendas com problemas
+
+// empresa vê todas as encomendas com problemas
+routes.get('/delivery/problems', DeliveryProblemsController.index);
+// empresa cancela uma encomenda pelo ID
+routes.delete(
+  '/delivery/:id/cancel-delivery',
+  DeliveryProblemsController.delete
+);
 
 export default routes;

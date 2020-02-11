@@ -131,7 +131,7 @@ class OrderController {
 
     await order.save();
 
-    return res.json(order);
+    return res.json();
   }
 }
 
