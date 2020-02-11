@@ -151,7 +151,12 @@ class DeliveryController {
       return res.status(400).json({ error: 'Delivery does not exist' });
     }
 
-    const order = await Order.findByPk(withId);
+    const order = await Order.findOne({
+      where: {
+        id: withId,
+        deliveryman_id: id,
+      },
+    });
 
     if (!order) {
       return res.status(400).json({ error: 'Order does not exist' });
