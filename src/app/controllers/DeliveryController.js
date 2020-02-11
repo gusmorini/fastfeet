@@ -7,6 +7,10 @@ import {
   isBefore,
   min,
   max,
+  startOfDay,
+  endOfDay,
+  format,
+  isEqual,
 } from 'date-fns';
 
 import Deliveryman from '../models/Deliveryman';
@@ -26,10 +30,9 @@ class DeliveryController {
       where: {
         deliveryman_id: req.params.id,
         canceled_at: null,
-        start_date: null,
         end_date: null,
       },
-      attributes: ['id', 'product'],
+      attributes: ['id', 'product', 'start_date'],
       include: [
         {
           model: Recipient,
@@ -176,6 +179,24 @@ class DeliveryController {
       return res
         .status(400)
         .json({ error: 'it is not possible to make withdrawals after hours' });
+    }
+
+    // o entregador só pode fazer 5 retiradas por dia
+    const { count } = await Order.findAndCountAll({
+      where: {
+        deliveryman_id: id,
+        start_date: {
+          [Op.between]: [startOfDay(searchDate), endOfDay(searchDate)],
+        },
+      },
+    });
+
+    console.log(count);
+
+    if (count && count >= 5) {
+      return res
+        .status(400)
+        .json({ error: 'exceeded the daily withdrawal limit' });
     }
 
     if (
