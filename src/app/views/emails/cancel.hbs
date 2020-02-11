@@ -1,0 +1,35 @@
+<strong>Olá, {{del_name}}</strong>
+
+<p>
+  Uma encomenda com problema foi cancelada pela matriz, segue os detalhes:
+</p>
+
+<p>
+  <strong>ID: </strong> {{order_id}} <br>
+  <strong>Produto: </strong> {{order_product}} <br>
+  <strong>Retirada:</strong> {{formattedDate}} <br>
+
+  <br><br>
+
+  <strong>Destinatário: </strong> {{rec_name}} <br>
+  <strong>Cidade:</strong> {{rec_city}} - {{rec_state}}
+
+  <br><br>
+
+  <strong>Problema:</strong> {{problem_description}}
+
+</p>
+
+
+{{!--
+
+  problem_description,
+  order_id,
+  order_product,
+  del_name,
+  rec_name,
+  rec_city,
+  rec_state,
+  formattedDate
+
+ --}}

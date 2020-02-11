@@ -63,8 +63,9 @@ class OrderController {
       return res.status(400).json({ error: 'Delivery man does not exist' });
     }
 
-    // envio de email
-    // handle (name,email,product)
+    /*
+      envio de email
+    */
     const { name, email } = deliverymanExists;
 
     await Queue.add(OrderMail.key, { name, email, product });
