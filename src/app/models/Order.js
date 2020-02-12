@@ -14,6 +14,7 @@ class Order extends Model {
         tableName: 'orders',
       }
     );
+
     return this;
   }
 

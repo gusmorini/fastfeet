@@ -91,7 +91,7 @@ routes.delete('/order/:id', OrderController.delete);
 routes.get('/delivery/problems', DeliveryProblemsController.index);
 // empresa cancela uma encomenda pelo ID
 routes.delete(
-  '/delivery/:id/cancel-delivery',
+  '/delivery/problem/:id/cancel-delivery',
   DeliveryProblemsController.delete
 );
 

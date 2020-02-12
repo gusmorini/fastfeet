@@ -18,6 +18,7 @@ class DeliveryProblemsController {
         attributes: ['id', 'product'],
       },
     });
+
     return res.json(problems);
   }
 
@@ -44,17 +45,17 @@ class DeliveryProblemsController {
     se a encomenda não foi entrege
   */
 
-    if (
-      !(await Order.findOne({
-        where: {
-          id,
-          deliveryman_id,
-          start_date: { [Op.not]: null },
-          end_date: null,
-          canceled_at: null,
-        },
-      }))
-    ) {
+    const order = await Order.findOne({
+      where: {
+        id,
+        deliveryman_id,
+        start_date: { [Op.not]: null },
+        end_date: null,
+        canceled_at: null,
+      },
+    });
+
+    if (!order) {
       return res.status(400).json({ error: 'problem cannot be registered' });
     }
 
@@ -105,7 +106,13 @@ class DeliveryProblemsController {
     order.canceled_at = new Date();
 
     await order.save();
-    await problem.destroy();
+
+    /*
+      Deleta todos os problemas relacionados a uma entrega
+    */
+    await DeliveryProblems.destroy({
+      where: { delivery_id: problem.order.id },
+    });
 
     return res.json();
   }
