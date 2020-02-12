@@ -91,8 +91,6 @@ class DeliveryProblemsController {
       },
     });
 
-    await Queue.add(CancelMail.key, problem);
-
     if (!problem) {
       return res.status(401).json({ error: 'problem id not found' });
     }
@@ -106,6 +104,8 @@ class DeliveryProblemsController {
     order.canceled_at = new Date();
 
     await order.save();
+
+    await Queue.add(CancelMail.key, problem);
 
     /*
       Deleta todos os problemas relacionados a uma entrega
