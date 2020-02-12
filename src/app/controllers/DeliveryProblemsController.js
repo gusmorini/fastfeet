@@ -11,44 +11,21 @@ import Queue from '../../lib/Queue';
 class DeliveryProblemsController {
   async index(req, res) {
     const problems = await DeliveryProblems.findAll({
-      attributes: ['id', 'description'],
+      attributes: ['id', 'description', 'created_at'],
       include: {
         model: Order,
         as: 'order',
         attributes: ['id', 'product'],
-        include: [
-          {
-            model: Deliveryman,
-            as: 'deliveryman',
-            attributes: ['id', 'name', 'email'],
-          },
-          {
-            model: Recipient,
-            as: 'recipient',
-            attributes: ['id', 'name'],
-          },
-        ],
       },
     });
     return res.json(problems);
   }
 
   async list(req, res) {
-    const { id } = req.params;
-
+    const { id } = req.params; // id da encomenda
     const problems = await DeliveryProblems.findAll({
-      attributes: ['id', 'description'],
-      include: {
-        model: Order,
-        as: 'order',
-        where: { id },
-        attributes: ['id', 'product'],
-        include: {
-          model: Recipient,
-          as: 'recipient',
-          attributes: ['id', 'name'],
-        },
-      },
+      where: { delivery_id: id },
+      attributes: ['id', 'description', 'created_at'],
     });
 
     return res.json(problems);
@@ -59,13 +36,13 @@ class DeliveryProblemsController {
     const { description, deliveryman_id } = req.body;
 
     /*
-      verifica:
-      se existe a encomenda
-      se a ecomenda pertence ao entregador
-      se a encomenda já foi retirada pelo entregador
-      se a encomenda não foi cancelada
-      se a encomenda não foi entrege
-    */
+    verifica:
+    se existe a encomenda
+    se a ecomenda pertence ao entregador
+    se a encomenda já foi retirada pelo entregador
+    se a encomenda não foi cancelada
+    se a encomenda não foi entrege
+  */
 
     if (
       !(await Order.findOne({
