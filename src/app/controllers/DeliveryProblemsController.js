@@ -134,14 +134,10 @@ class DeliveryProblemsController {
     }
 
     order.canceled_at = new Date();
-
     await order.save();
-
     await Queue.add(CancelMail.key, problem);
 
-    /*
-    Deleta todos os problemas relacionados a uma entrega
-  */
+    // Deleta todos os problemas relacionados a uma entrega
     await DeliveryProblems.destroy({
       where: { delivery_id: problem.order.id },
     });
