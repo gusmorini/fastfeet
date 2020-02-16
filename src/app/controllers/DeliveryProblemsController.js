@@ -10,13 +10,17 @@ import Queue from '../../lib/Queue';
 
 class DeliveryProblemsController {
   async index(req, res) {
-    const problems = await DeliveryProblems.findAll({
-      attributes: ['id', 'description', 'created_at'],
+    const problems = await Order.findAll({
       include: {
-        model: Order,
-        as: 'order',
-        attributes: ['id', 'product'],
+        model: DeliveryProblems,
+        as: 'problems',
       },
+      // attributes: ['id', 'description', 'created_at'],
+      // include: {
+      //   model: Order,
+      //   as: 'problem',
+      //   attributes: ['id', 'product'],
+      // },
     });
 
     return res.json(problems);
@@ -37,13 +41,13 @@ class DeliveryProblemsController {
     const { description, deliveryman_id } = req.body;
 
     /*
-    verifica:
-    se existe a encomenda
-    se a ecomenda pertence ao entregador
-    se a encomenda já foi retirada pelo entregador
-    se a encomenda não foi cancelada
-    se a encomenda não foi entrege
-  */
+  verifica:
+  se existe a encomenda
+  se a ecomenda pertence ao entregador
+  se a encomenda já foi retirada pelo entregador
+  se a encomenda não foi cancelada
+  se a encomenda não foi entrege
+*/
 
     const order = await Order.findOne({
       where: {
@@ -108,8 +112,8 @@ class DeliveryProblemsController {
     await Queue.add(CancelMail.key, problem);
 
     /*
-      Deleta todos os problemas relacionados a uma entrega
-    */
+    Deleta todos os problemas relacionados a uma entrega
+  */
     await DeliveryProblems.destroy({
       where: { delivery_id: problem.order.id },
     });

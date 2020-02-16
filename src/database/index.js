@@ -1,5 +1,5 @@
 import Sequelize from 'sequelize';
-import databasecfg from '../config/database';
+import databaseConfig from '../config/database';
 
 import User from '../app/models/User';
 import Recipient from '../app/models/Recipient';
@@ -15,8 +15,8 @@ const models = [
   Recipient,
   File,
   Deliveryman,
-  Signature,
   Order,
+  Signature,
   Schedule,
   DeliveryProblems,
 ];
@@ -24,15 +24,18 @@ const models = [
 class Database {
   constructor() {
     this.init();
+    this.associate();
   }
 
   init() {
-    this.connection = new Sequelize(databasecfg);
-    models.map(model => {
-      model.init(this.connection);
-      // se existe o método associate faça...
-      if (model.associate) model.associate(this.connection.models);
-    });
+    this.connection = new Sequelize(databaseConfig);
+    models.map(model => model.init(this.connection));
+  }
+
+  associate() {
+    models.map(
+      model => model.associate && model.associate(this.connection.models)
+    );
   }
 }
 
