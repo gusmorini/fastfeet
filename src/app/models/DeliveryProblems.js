@@ -14,12 +14,12 @@ class DeliveryProblems extends Model {
     return this;
   }
 
-  static associate(models) {
-    this.belongsTo(models.Order, {
-      foreignKey: 'delivery_id',
-      as: 'order',
-    });
-  }
+  // static associate(models) {
+  //   this.belongsTo(models.Order, {
+  //     foreignKey: 'delivery_id',
+  //     as: 'order',
+  //   });
+  // }
 }
 
 export default DeliveryProblems;

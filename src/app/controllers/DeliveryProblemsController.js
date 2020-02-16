@@ -1,3 +1,4 @@
+import * as Yup from 'yup';
 import { Op } from 'sequelize';
 import DeliveryProblems from '../models/DeliveryProblems';
 import Order from '../models/Order';
@@ -15,12 +16,6 @@ class DeliveryProblemsController {
         model: DeliveryProblems,
         as: 'problems',
       },
-      // attributes: ['id', 'description', 'created_at'],
-      // include: {
-      //   model: Order,
-      //   as: 'problem',
-      //   attributes: ['id', 'product'],
-      // },
     });
 
     return res.json(problems);
@@ -28,15 +23,26 @@ class DeliveryProblemsController {
 
   async list(req, res) {
     const { id } = req.params; // id da encomenda
-    const problems = await DeliveryProblems.findAll({
-      where: { delivery_id: id },
-      attributes: ['id', 'description', 'created_at'],
+    const problems = await Order.findByPk(id, {
+      include: {
+        model: DeliveryProblems,
+        as: 'problems',
+      },
     });
 
     return res.json(problems);
   }
 
   async store(req, res) {
+    const schema = Yup.object().shape({
+      description: Yup.string().required(),
+      deliveryman_id: Yup.number().required(),
+    });
+
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ error: 'Invalid data' });
+    }
+
     const { id } = req.params;
     const { description, deliveryman_id } = req.body;
 
