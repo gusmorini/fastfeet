@@ -12,22 +12,44 @@ import Queue from '../../lib/Queue';
 class DeliveryProblemsController {
   async index(req, res) {
     const problems = await Order.findAll({
-      include: {
-        model: DeliveryProblems,
-        as: 'problems',
-      },
+      attributes: ['id', 'product'],
+      where: { canceled_at: null },
+      include: [
+        {
+          model: Deliveryman,
+          as: 'deliveryman',
+          attributes: ['id', 'name', 'email'],
+        },
+        {
+          model: DeliveryProblems,
+          as: 'problems',
+          attributes: ['id', 'description'],
+        },
+      ],
     });
 
-    return res.json(problems);
+    const filtro = problems.filter(prob => prob.problems.length > 0);
+
+    return res.json(filtro);
   }
 
   async list(req, res) {
     const { id } = req.params; // id da encomenda
     const problems = await Order.findByPk(id, {
-      include: {
-        model: DeliveryProblems,
-        as: 'problems',
-      },
+      where: { canceled_at: null, end_date: null },
+      attributes: ['id', 'product'],
+      include: [
+        {
+          model: Recipient,
+          as: 'recipient',
+          attributes: ['id', 'name', 'city', 'state'],
+        },
+        {
+          model: DeliveryProblems,
+          as: 'problems',
+          attributes: ['id', 'description'],
+        },
+      ],
     });
 
     return res.json(problems);
