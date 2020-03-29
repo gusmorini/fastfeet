@@ -80,7 +80,7 @@ routes.post('/signature', upload.single('file'), SignatureController.store);
 routes.get('/signature', SignatureController.index);
 
 /* CADASTRO DE ENCOMENDAS */
-routes.get('/order', OrderController.index);
+routes.get('/order/', OrderController.index);
 routes.post('/order', OrderController.store);
 routes.put('/order/:id', OrderController.update);
 routes.delete('/order/:id', OrderController.delete);
